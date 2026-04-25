@@ -1,7 +1,7 @@
 function CardBox({ children }) {
   return (
     <div
-      className="card shadow p-4 mx-auto"
+      className="card border-primary p-4 mx-auto my-5"
       style={{ maxWidth: "500px" }}
     >
       {children}
