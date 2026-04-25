@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom"
 
-function Btn({ text, to, type = "primary", onClick }) {
+function Btn({ text, to, type, onClick, width = '400px' }) {
   if (to) {
     return (
-      <Link to={to} className={`btn btn-${type} w-100`}>
+      <Link to={to} className={`btn btn-${type} btn-lg d-block mx-auto`} style={{ width: width }}>
         {text}
       </Link>
     )
@@ -11,8 +11,9 @@ function Btn({ text, to, type = "primary", onClick }) {
 
   return (
     <button
-      className={`btn btn-${type} w-100`}
+      className={`btn btn-${type} btn-lg d-block mx-auto`}
       onClick={onClick}
+      style={{ width: width }}
     >
       {text}
     </button>

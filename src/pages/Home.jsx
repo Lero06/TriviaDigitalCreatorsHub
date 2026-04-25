@@ -10,12 +10,11 @@ function Home() {
 
   return (
     <div className="container mt-5">
-      <CardBox>
-        <h1 className="text-center mb-3">🎯 Trivia Game</h1>
+        <h1 className="text-center text-secondary">Trivia Game</h1>
 
-        <p className="text-center text-muted">
+        <h4 className="text-center text-secondary">
           Pon a prueba tus conocimientos
-        </p>
+        </h4>
 
         <SelectInput
           label="Categoría"
@@ -40,8 +39,8 @@ function Home() {
           ]}
         />
 
-        <Btn text="Jugar Ahora" to="/quiz" />
-      </CardBox>
+        <Btn text="Jugar Ahora" to="/quiz" type="secondary " />
+        
     </div>
   )
 }

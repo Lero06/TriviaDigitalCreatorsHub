@@ -182,3 +182,25 @@
     border-right-color: var(--border);
   }
 }
+
+/* Arreglo del scroll horizontal para el tema Vapor */
+body {
+  overflow-x: hidden !important;
+}
+
+/* Opcional: Si el scroll vertical también molesta */
+html, body {
+  height: 100vh;
+  overflow-y: hidden;
+}
+
+#root {
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Ajusta el efecto grid para que no genere scroll */
+body::after {
+  width: 100vw !important;
+  left: 0 !important;
+}
