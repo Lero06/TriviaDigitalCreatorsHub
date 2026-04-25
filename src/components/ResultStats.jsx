@@ -3,7 +3,7 @@ function ResultStats() {
     <div className="mb-4">
 
       <div className="alert alert-success text-center">
-        🎉 ¡Juego terminado!
+        ¡Juego terminado!
       </div>
 
       <ul className="list-group">

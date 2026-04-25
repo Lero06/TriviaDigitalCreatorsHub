@@ -5,10 +5,9 @@ import ResultStats from "../components/ResultStats"
 function Result() {
   return (
     <div className="container mt-5">
-      <CardBox>
 
         <h1 className="text-center mb-4">
-          📊 Resultados
+          Resultados
         </h1>
 
         <ResultStats />
@@ -27,8 +26,6 @@ function Result() {
           />
 
         </div>
-
-      </CardBox>
     </div>
   )
 }
