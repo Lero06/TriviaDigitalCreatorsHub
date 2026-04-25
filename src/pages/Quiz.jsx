@@ -16,7 +16,7 @@ function Quiz() {
 
         <div className="d-grid gap-2">
 
-          <Btn text="Madrid" type="outline-primary" />
+          <Btn text="Madrid" type="outline-primary" to="/result"/>
           <Btn text="París" type="outline-primary" />
           <Btn text="Roma" type="outline-primary" />
           <Btn text="Berlín" type="outline-primary" />
