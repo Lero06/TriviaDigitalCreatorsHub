@@ -9,6 +9,7 @@ const CONFIG_DIFICULTAD = {
 const PUNTOS_BASE = 100
 
 export default function useGameLogic(preguntas, dificultad) {
+    const [ultimosPuntos, setUltimosPuntos] = useState(null)
     const [indexPreguntaActual, setIndexPreguntaActual] = useState(0)
     const [puntaje, setPuntaje] = useState(0)
 
@@ -19,24 +20,32 @@ export default function useGameLogic(preguntas, dificultad) {
     const preguntasTotales = preguntas.length
 
     const isJuegoAcabado = indexPreguntaActual >= preguntasTotales
+    
+    const puntosPosibles = PUNTOS_BASE * config.multiplicador
 
     function responderPregunta(isCorrecta, tiempoRestante) {
         if (isCorrecta) {
             const bonusPorTiempo = tiempoRestante / config.tiempoPorPregunta
-            const puntos = Math.round(PUNTOS_BASE * config.multiplicador * bonusPorTiempo)
+            const puntos = Math.round(puntosPosibles * bonusPorTiempo)
             setPuntaje(puntaje => puntaje + puntos)
+            setUltimosPuntos(puntos)
+        } else {
+            setUltimosPuntos(0)
         }
     }
 
     function siguientePregunta() {
         setIndexPreguntaActual(indexPreguntaActual => indexPreguntaActual + 1)
+        setUltimosPuntos(null)
     }
 
     return {
         preguntaActual,
         indexPreguntaActual,
         preguntasTotales,
+        ultimosPuntos,
         puntaje,
+        puntosPosibles,
         isJuegoAcabado,
         tiempoPorPregunta: config.tiempoPorPregunta,
         responderPregunta,

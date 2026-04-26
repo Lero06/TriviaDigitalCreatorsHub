@@ -17,7 +17,9 @@ function Quiz() {
     preguntaActual,
     indexPreguntaActual,
     preguntasTotales,
+    ultimosPuntos,
     puntaje,
+    puntosPosibles,
     isJuegoAcabado,
     tiempoPorPregunta,
     responderPregunta,
@@ -124,21 +126,24 @@ function Quiz() {
         </div>
       </div>
 
-      <div
-        className="card bg-primary bg-opacity-10 border-primary mb-4 my-5 shadow-sm"
-        style={{ width: '1300px', marginLeft: 'auto', marginRight: 'auto' }}
-      >
-        <div className="card-body p-4">
-          <h4 className="card-title text-center mb-3">Puntos obtenidos:</h4>
-          <Btn text="Continuar" type="light" onClick={() => {
-            siguientePregunta(),
-              reiniciar(tiempoPorPregunta),
-              iniciar(),
+      {ultimosPuntos !== null && (
+        <div
+          className="card bg-primary bg-opacity-10 border-primary mb-4 my-5 shadow-sm"
+          style={{ width: '1300px', marginLeft: 'auto', marginRight: 'auto' }}
+        >
+          <div className="card-body p-4">
+            <h4 className="card-title text-center mb-3">
+              Puntos obtenidos: {ultimosPuntos}/{puntosPosibles}
+            </h4>
+            <Btn text="Continuar" type="light" onClick={() => {
+              siguientePregunta()
+              reiniciar(tiempoPorPregunta)
+              iniciar()
               setRespondido(false)
-          }} width='640px' />
+            }} width='640px' />
+          </div>
         </div>
-      </div>
-
+      )}
     </div>
   )
 }
