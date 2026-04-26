@@ -3,14 +3,14 @@ import { createContext, useContext, useState } from "react";
 const GameContext = createContext()
 
 export function GameProvider({ children }) {
-    const [category, setCategory] = useState("general")
-    const [difficulty, setDifficulty] = useState("easy")
+    const [categoria, setCategoria] = useState("general")
+    const [dificultad, setDificultad] = useState("easy")
 
     const value = {
-        category,
-        setCategory,
-        difficulty,
-        setDifficulty,
+        categoria,
+        setCategoria,
+        dificultad,
+        setDificultad,
     }
 
     return (

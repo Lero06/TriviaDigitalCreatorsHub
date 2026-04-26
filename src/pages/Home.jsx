@@ -3,7 +3,7 @@ import Btn from "../components/Btn"
 import SelectInput from "../components/SelectInput"
 
 function Home() {
-  const { category, setCategory, difficulty, setDifficulty } = useGame()
+  const { categoria, setCategoria, dificultad, setDificultad } = useGame()
 
   return (
     <div className="container mt-5">
@@ -15,8 +15,8 @@ function Home() {
 
         <SelectInput
           label="Categoría"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          value={categoria}
+          onChange={(e) => setCategoria(e.target.value)}
           options={[
             { value: "general", name: "General" },
             { value: "science", name: "Ciencia" },
@@ -27,8 +27,8 @@ function Home() {
 
         <SelectInput
           label="Dificultad"
-          value={difficulty}
-          onChange={(e) => setDifficulty(e.target.value)}
+          value={dificultad}
+          onChange={(e) => setDificultad(e.target.value)}
           options={[
             { value: "easy", name: "Fácil" },
             { value: "medium", name: "Media" },
