@@ -1,4 +1,4 @@
-function ResultStats({ puntaje, respuestasCorrectas, preguntasTotales, dificultad }) {
+function ResultStats({ puntaje, respuestasCorrectas, preguntasTotales, dificultad, categoria }) {
   return (
     <div className="mb-4 d-flex flex-column align-items-center">
       <div className="alert alert-success text-center" style={{ width: '400px', maxWidth: '90%' }}>
@@ -12,8 +12,13 @@ function ResultStats({ puntaje, respuestasCorrectas, preguntasTotales, dificulta
         </li>
 
         <li className="list-group-item d-flex justify-content-between">
-          <span>Correctas</span>
-          <strong>{respuestasCorrectas}</strong>
+          <span>Dificultad</span>
+          <strong>{dificultad}</strong>
+        </li>
+
+        <li className="list-group-item d-flex justify-content-between">
+          <span>Categoria</span>
+          <strong>{categoria}</strong>
         </li>
 
         <li className="list-group-item d-flex justify-content-between">
@@ -22,8 +27,8 @@ function ResultStats({ puntaje, respuestasCorrectas, preguntasTotales, dificulta
         </li>
 
         <li className="list-group-item d-flex justify-content-between">
-          <span>Dificultad</span>
-          <strong>{dificultad}</strong>
+          <span>Correctas</span>
+          <strong>{respuestasCorrectas}</strong>
         </li>
       </ul>
     </div>
