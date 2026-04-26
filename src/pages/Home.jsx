@@ -1,12 +1,9 @@
-import { useState } from "react"
-
+import { useGame } from "../context/GameContext"
 import Btn from "../components/Btn"
 import SelectInput from "../components/SelectInput"
-import CardBox from "../components/CardBox"
 
 function Home() {
-  const [category, setCategory] = useState("general")
-  const [difficulty, setDifficulty] = useState("easy")
+  const { category, setCategory, difficulty, setDifficulty } = useGame()
 
   return (
     <div className="container mt-5">
