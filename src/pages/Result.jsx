@@ -1,12 +1,11 @@
-import { useGame } from "../context/GameContext"
-import CardBox from "../components/CardBox"
+import { useLocation } from "react-router-dom"
 import Btn from "../components/Btn"
 import ResultStats from "../components/ResultStats"
 import { useState } from "react"
 
-function Result({ puntaje, respuestasCorrectas, preguntasTotales }) {
-  const [showModal, setShowModal] = useState(false)
-  const { dificultad } = useGame()
+function Result() {
+    const location = useLocation()
+    const { puntaje, respuestasCorrectas, preguntasTotales, dificultad } = location.state
 
   const textoPorCompartir = `🎯 Trivia Game
 🏆 Puntos: ${puntaje}
@@ -38,57 +37,62 @@ function Result({ puntaje, respuestasCorrectas, preguntasTotales }) {
     window.open(url, "_blank")
   }
 
-  return (
-    <div className="container mt-5">
-      <h1 className="text-center mb-4">Resultados</h1>
-      <ResultStats />
+    return (
+      <div className="container mt-5">
+        <h1 className="text-center mb-4">Resultados</h1>
+        <ResultStats
+          puntaje={puntaje}
+          respuestasCorrectas={respuestasCorrectas}
+          preguntasTotales={preguntasTotales}
+          dificultad={dificultad}
+        />
 
-      <div className="d-grid gap-2">
-        <Btn text="Jugar Otra Vez" to="/" type="primary" />
-        
-        <button
-          type = "button"
-          className="btn btn-success btn-lg d-block mx-auto"
-          onClick={() => setShowModal(true)}
-          style={{width: 400}}
+        <div className="d-grid gap-2">
+          <Btn text="Jugar Otra Vez" to="/" type="primary" />
+
+          <button
+            type="button"
+            className="btn btn-success btn-lg d-block mx-auto"
+            onClick={() => setShowModal(true)}
+            style={{ width: 400 }}
+          >
+            Compartir Resultado
+          </button>
+        </div>
+
+        <div
+          className={`modal fade ${showModal ? "show d-block" : ""}`}
+          style={{ backgroundColor: showModal ? "rgba(0,0,0,0.5)" : "" }}
         >
-          Compartir Resultado
-        </button>
-      </div>
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
 
-      <div
-        className={`modal fade ${showModal ? "show d-block" : ""}`}
-        style={{ backgroundColor: showModal ? "rgba(0,0,0,0.5)" : "" }}
-      >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-
-            <div className="modal-header">
-              <h5 className="modal-title">🔗 Compartir en</h5>
-              <button
-                type="button"
-                className="btn-close"
-                onClick={() => setShowModal(false)}
-              />
-            </div>
-
-            <div className="modal-body d-grid gap-2">
-              {platformas.map(platform => (
+              <div className="modal-header">
+                <h5 className="modal-title">🔗 Compartir en</h5>
                 <button
-                  key={platform.name}
-                  className={`btn btn-${platform.color}`}
-                  onClick={() => handleShare(platform.url)}
-                >
-                  {platform.name}
-                </button>
-              ))}
-            </div>
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setShowModal(false)}
+                />
+              </div>
 
+              <div className="modal-body d-grid gap-2">
+                {platformas.map(platform => (
+                  <button
+                    key={platform.name}
+                    className={`btn btn-${platform.color}`}
+                    onClick={() => handleShare(platform.url)}
+                  >
+                    {platform.name}
+                  </button>
+                ))}
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  )
-}
+    )
+  }
 
-export default Result
+  export default Result

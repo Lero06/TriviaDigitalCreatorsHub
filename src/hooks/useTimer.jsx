@@ -2,17 +2,17 @@ import { useState, useEffect, useRef} from "react"
 
 export default function useTimer(tiempoInicial) {
     const [tiempoRestante, setTiempoRestante] = useState(tiempoInicial)
-    const [estaCorreindo, setEstaCorreindo] = useState(false)
+    const [estaCorriendo, setEstaCorreindo] = useState(false)
 
     useEffect(() => {
-        if (!estaCorreindo || tiempoRestante <= 0) return
+        if (!estaCorriendo || tiempoRestante <= 0) return
 
         const intervalo = setInterval(() => {
             setTiempoRestante(tiempoRestante => tiempoRestante - 1)
         }, 1000)
 
         return () => clearInterval(intervalo)
-    }, [estaCorriend, tiempoRestante])
+    }, [estaCorriendo, tiempoRestante])
 
     function iniciar() { setEstaCorreindo(true) }
 

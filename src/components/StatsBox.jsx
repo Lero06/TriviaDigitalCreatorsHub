@@ -1,4 +1,4 @@
-function StatsBox([{ preguntaActual, preguntasTotales, tiempoRestante, puntos}]) {
+function StatsBox({ preguntaActual, preguntasTotales, tiempoRestante, puntos}) {
   return (
     <div className="d-flex justify-content-around mb-4">
 
@@ -8,8 +8,8 @@ function StatsBox([{ preguntaActual, preguntasTotales, tiempoRestante, puntos}])
       </div>
       
       <div className="text-center">
-        <div className="fw-bold mt-1">{tiempoRestante}</div>
-        <span className="badge bg-warning text-dark mt-1 fs-6">15s</span>
+        <div className="fw-bold mt-1">Tiempo</div>
+        <span className="badge bg-warning text-dark mt-1 fs-6">{tiempoRestante}s</span>
       </div>
       
       <div className="text-center">
