@@ -5,6 +5,7 @@ import { useState } from "react"
 
 function Result() {
     const location = useLocation()
+    const [showModal, setShowModal] = useState(false)
     const { puntaje, respuestasCorrectas, preguntasTotales, dificultad } = location.state
 
   const textoPorCompartir = `🎯 Trivia Game
@@ -87,7 +88,6 @@ function Result() {
                   </button>
                 ))}
               </div>
-
             </div>
           </div>
         </div>
