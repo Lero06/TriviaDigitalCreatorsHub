@@ -17,6 +17,7 @@ function Quiz() {
     preguntaActual,
     indexPreguntaActual,
     preguntasTotales,
+    preguntasCorrectas,
     ultimosPuntos,
     puntaje,
     puntosPosibles,
@@ -50,7 +51,7 @@ function Quiz() {
       navigate("/result", {
         state: {
           puntaje,
-          respuestasCorrectas: 0,
+          respuestasCorrectas: preguntasCorrectas,
           preguntasTotales,
           dificultad: dificultad
         }
