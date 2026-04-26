@@ -6,12 +6,13 @@ import { useState } from "react"
 function Result() {
     const location = useLocation()
     const [showModal, setShowModal] = useState(false)
-    const { puntaje, respuestasCorrectas, preguntasTotales, dificultad } = location.state
+    const { puntaje, respuestasCorrectas, preguntasTotales, dificultad, categoria } = location.state
 
-  const textoPorCompartir = `🎯 Trivia Game
-🏆 Puntos: ${puntaje}
-✅ Respuestas correctas: ${respuestasCorrectas}/${preguntasTotales}
-💪 Dificultad: ${dificultad}
+  const textoPorCompartir = `Trivia Game
+Puntos: ${puntaje}
+Dificultad: ${dificultad}
+Categoria: ${categoria}
+Respuestas correctas: ${respuestasCorrectas}/${preguntasTotales}
 ¡Jugá vos también!`
 
   const encodedText = encodeURIComponent(textoPorCompartir)
@@ -24,7 +25,7 @@ function Result() {
     },
     {
       name: "Facebook",
-      color: "primary",
+      color: "info",
       url: `https://www.facebook.com/sharer/sharer.php?quote=${encodedText}`
     },
     {
@@ -46,6 +47,7 @@ function Result() {
           respuestasCorrectas={respuestasCorrectas}
           preguntasTotales={preguntasTotales}
           dificultad={dificultad}
+          categoria={categoria}
         />
 
         <div className="d-grid gap-2">
@@ -65,7 +67,7 @@ function Result() {
           className={`modal fade ${showModal ? "show d-block" : ""}`}
           style={{ backgroundColor: showModal ? "rgba(0,0,0,0.5)" : "" }}
         >
-          <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-dialog modal-dialog-centered" style={{width: 400}}>
             <div className="modal-content">
 
               <div className="modal-header">

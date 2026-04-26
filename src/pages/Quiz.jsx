@@ -53,7 +53,8 @@ function Quiz() {
           puntaje,
           respuestasCorrectas: preguntasCorrectas,
           preguntasTotales,
-          dificultad: dificultad
+          dificultad: dificultad,
+          categoria: categoria,
         }
       })
     }
