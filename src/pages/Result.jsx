@@ -1,11 +1,16 @@
 import { useLocation } from "react-router-dom"
 import Btn from "../components/Btn"
 import ResultStats from "../components/ResultStats"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
 import { useState } from "react"
+import Alert from "../components/Alert"
 
 function Result() {
     const location = useLocation()
+    const navigate = useNavigate()
     const [showModal, setShowModal] = useState(false)
+    const { isAuthenticated, user } = useAuth()
     const { puntaje, respuestasCorrectas, preguntasTotales, dificultad, categoria } = location.state
 
   const textoPorCompartir = `Trivia Game
@@ -39,9 +44,27 @@ Respuestas correctas: ${respuestasCorrectas}/${preguntasTotales}
     window.open(url, "_blank")
   }
 
+   const handleAuth = () => {
+        if (!isAuthenticated) {
+            alert("Debes iniciar sesión para compartir");
+            navigate("/login");
+            return;
+        }
+        setShowModal(true);
+    };
+
     return (
       <div className="container mt-5">
         <h1 className="text-center mb-4">Resultados</h1>
+
+         {isAuthenticated && (
+               <Alert
+               type="info"
+               message={`Logueado como: ${user.name}`}
+               width={400}
+               />
+            )}
+            
         <ResultStats
           puntaje={puntaje}
           respuestasCorrectas={respuestasCorrectas}
@@ -52,15 +75,7 @@ Respuestas correctas: ${respuestasCorrectas}/${preguntasTotales}
 
         <div className="d-grid gap-2">
           <Btn text="Jugar Otra Vez" to="/" type="primary" />
-
-          <button
-            type="button"
-            className="btn btn-success btn-lg d-block mx-auto"
-            onClick={() => setShowModal(true)}
-            style={{ width: 400 }}
-          >
-            Compartir Resultado
-          </button>
+          <Btn text="Compartir Resultado" onClick={handleAuth} type="success" />
         </div>
 
         <div
