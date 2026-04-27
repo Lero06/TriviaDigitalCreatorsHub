@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom"
 import { useGame } from "../context/GameContext"
 import useGameLogic from "../hooks/useGameLogic"
 import useTimer from "../hooks/useTimer"
-import mockQuestions from "../mocks/questions"
 import Btn from "../components/Btn"
 import QuestionBox from "../components/QuestionBox"
 import StatsBox from "../components/StatsBox"
@@ -12,7 +11,7 @@ function Quiz() {
   const navigate = useNavigate()
   const [respondido, setRespondido] = useState(false)
   const [respuestaSeleccionada, setRespuestaSeleccionada] = useState(null)
-  const { dificultad, categoria } = useGame()
+  const { dificultad, categoria, questions, loading, error } = useGame()
   const {
     preguntaActual,
     indexPreguntaActual,
@@ -25,7 +24,7 @@ function Quiz() {
     tiempoPorPregunta,
     responderPregunta,
     siguientePregunta,
-  } = useGameLogic(mockQuestions, dificultad)
+  } = useGameLogic(questions, dificultad)
   const {
     tiempoRestante,
     iniciar,
@@ -35,8 +34,16 @@ function Quiz() {
   } = useTimer(tiempoPorPregunta)
 
   useEffect(() => {
-    iniciar()
-  }, [])
+    if (questions.length > 0) {
+      iniciar()
+    }
+  }, [questions])
+
+   useEffect(() => {
+    if (!loading && questions.length === 0 && !error) {
+      navigate("/")
+    }
+  }, [loading, questions])
 
   useEffect(() => {
     if (isTerminado) {
@@ -66,6 +73,19 @@ function Quiz() {
     setRespuestaSeleccionada(answer)
     parar()
     responderPregunta(preguntaActual.correct === answer, tiempoRestante)
+  }
+
+
+  if (error) {
+    return (
+      <div className="container mt-5 text-center">
+        <div className="alert alert-danger" role="alert">
+          <h3>❌ Error al cargar preguntas</h3>
+          <p>{error}</p>
+        </div>
+        <Btn text="Volver al Inicio" to="/" type="primary" />
+      </div>
+    )
   }
 
   if (!preguntaActual) return null
