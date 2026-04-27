@@ -55,10 +55,49 @@ export const getQuestions = async (categoria, dificultad, cantidad = 10) => {
                 ...question.incorrect_answers.map(decodeHTML)
             ])
         }));
-        return transformedQuestions;
+        const translatedQuestions = await translateQuestions(transformedQuestions);
+        return translatedQuestions;
     }
     catch (error) {
         console.error("Error fetching questions:", error);
         throw error;
     }
 }
+
+export const translateToSpanish = async (text) => {
+  try {
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|es`;
+    
+    const response = await fetch(url);
+    const data = await response.json();
+    
+    if (data.responseStatus === 200) {
+      return data.responseData.translatedText;
+    } else {
+      throw new Error("Translation failed");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return text;
+  }
+};
+
+export const translateQuestions = async (questions) => {
+  try {
+    const translatedQuestions = await Promise.all(
+      questions.map(async (question) => ({
+        question: await translateToSpanish(question.question),
+        correct: await translateToSpanish(question.correct),
+        answers: await Promise.all(
+          question.answers.map(answer => translateToSpanish(answer))
+        )
+      }))
+    );
+
+    return translatedQuestions;
+
+  } catch (error) {
+    console.error("Error translating questions:", error);
+    return questions;
+  }
+};
