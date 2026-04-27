@@ -1,9 +1,22 @@
 import { useGame } from "../context/GameContext"
+import { useNavigate } from "react-router-dom"
 import Btn from "../components/Btn"
 import SelectInput from "../components/SelectInput"
 
 function Home() {
-  const { categoria, setCategoria, dificultad, setDificultad } = useGame()
+  const { categoria, setCategoria, dificultad, setDificultad, fetchQuestions, loading, error } = useGame()
+  const navigate = useNavigate()
+
+  const handleJugarAhora = async () => {
+    try {
+      await fetchQuestions()
+
+      navigate("/quiz")
+      
+    } catch (err) {
+      console.error("Error al cargar preguntas:", err)
+    }
+  }
 
   return (
     <div className="container mt-5">
@@ -18,10 +31,10 @@ function Home() {
           value={categoria}
           onChange={(e) => setCategoria(e.target.value)}
           options={[
-            { value: "general", name: "General" },
-            { value: "science", name: "Ciencia" },
-            { value: "sports", name: "Deportes" },
-            { value: "history", name: "Historia" }
+            { value: "anime", name: "Anime" },
+            { value: "games", name: "Videojuego" },
+            { value: "films", name: "Peliculas" },
+            { value: "computers", name: "ITI" }
           ]}
         />
 
@@ -36,7 +49,7 @@ function Home() {
           ]}
         />
 
-        <Btn text="Jugar Ahora" to="/quiz" type="secondary " />
+        <Btn text= {loading ? "Cargando preguntas..." : "Jugar Ahora"} type="secondary " onClick={handleJugarAhora} disabled={loading} />
         
     </div>
   )
