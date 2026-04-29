@@ -1,6 +1,7 @@
 import "bootswatch/dist/vapor/bootstrap.min.css";
 import './fixes.css';
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
+import { HashRouter, Routes, Route } from "react-router-dom"
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { GameProvider } from "./context/GameContext"
 import { AuthProvider } from "./context/AuthContext"
@@ -13,13 +14,13 @@ import Login from "./pages/Login"
 function App() {
   return (
     <GoogleOAuthProvider clientId="990774059411-v93gsaevr57omvge07qqnjr0pejg8p0v.apps.googleusercontent.com">
-      <BrowserRouter>
+      <HashRouter>
         <GameProvider>
           <AuthProvider>
             <AppRoutes />
           </AuthProvider>
         </GameProvider>
-      </BrowserRouter>
+      </HashRouter>
     </GoogleOAuthProvider>
   )
 }
