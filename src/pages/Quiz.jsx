@@ -34,15 +34,11 @@ function Quiz() {
   } = useTimer(tiempoPorPregunta)
 
   useEffect(() => {
-    if (questions.length > 0) {
-      iniciar()
-    }
+    if (questions.length > 0) iniciar()
   }, [questions])
 
-   useEffect(() => {
-    if (!loading && questions.length === 0 && !error) {
-      navigate("/")
-    }
+  useEffect(() => {
+    if (!loading && questions.length === 0 && !error) navigate("/")
   }, [loading, questions])
 
   useEffect(() => {
@@ -60,8 +56,8 @@ function Quiz() {
           puntaje,
           respuestasCorrectas: preguntasCorrectas,
           preguntasTotales,
-          dificultad: dificultad,
-          categoria: categoria,
+          dificultad,
+          categoria,
         }
       })
     }
@@ -75,12 +71,21 @@ function Quiz() {
     responderPregunta(preguntaActual.correct === answer, tiempoRestante)
   }
 
-
   if (error) {
     return (
-      <div className="container mt-5 text-center">
+      <div
+        className="container"
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          paddingTop: "150px",
+        }}
+      >
         <div className="alert alert-danger" role="alert">
-          <h3>❌ Error al cargar preguntas</h3>
+          <h3>Error al cargar preguntas</h3>
           <p>{error}</p>
         </div>
         <Btn text="Volver al Inicio" to="/" type="primary" />
@@ -91,8 +96,17 @@ function Quiz() {
   if (!preguntaActual) return null
 
   return (
-    <div className="container mt-5">
-
+    <div
+      className="container"
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        paddingTop: "150px",
+      }}
+    >
       <StatsBox
         preguntaActual={indexPreguntaActual + 1}
         preguntasTotales={preguntasTotales}
@@ -100,9 +114,7 @@ function Quiz() {
         puntos={puntaje}
       />
 
-      <QuestionBox
-        question={preguntaActual.question}
-      />
+      <QuestionBox question={preguntaActual.question} />
 
       <div
         className="mx-auto"
