@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useGame } from "../context/GameContext"
+import { motion, AnimatePresence } from "framer-motion"
+import { PageTransition } from "../components/PageTransition"
 import useGameLogic from "../hooks/useGameLogic"
 import useTimer from "../hooks/useTimer"
 import Btn from "../components/Btn"
@@ -96,89 +98,111 @@ function Quiz() {
   if (!preguntaActual) return null
 
   return (
-    <div
-      className="container"
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        paddingTop: "150px",
-      }}
-    >
-      <StatsBox
-        preguntaActual={indexPreguntaActual + 1}
-        preguntasTotales={preguntasTotales}
-        tiempoRestante={tiempoRestante}
-        puntos={puntaje}
-      />
-
-      <QuestionBox question={preguntaActual.question} />
-
+    <PageTransition>
       <div
-        className="mx-auto"
-        style={{ width: '1300px', maxWidth: '90%', background: 'transparent', border: 'none', boxShadow: 'none' }}
+        className="container"
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          paddingTop: "150px",
+        }}
       >
-        <div className="row g-2">
-          <div className="col-6">
-            <Btn
-              text={preguntaActual.answers[0]}
-              type={respondido ? (preguntaActual.answers[0] === preguntaActual.correct ? "success" : "secondary") : "primary"}
-              onClick={() => handleAnswer(preguntaActual.answers[0])}
-              width="100%"
-              disabled={respondido}
-            />
-          </div>
-          <div className="col-6">
-            <Btn
-              text={preguntaActual.answers[1]}
-              type={respondido ? (preguntaActual.answers[1] === preguntaActual.correct ? "success" : "secondary") : "warning"}
-              onClick={() => handleAnswer(preguntaActual.answers[1])}
-              width="100%"
-              disabled={respondido}
-            />
-          </div>
-          <div className="col-6">
-            <Btn
-              text={preguntaActual.answers[2]}
-              type={respondido ? (preguntaActual.answers[2] === preguntaActual.correct ? "success" : "secondary") : "danger"}
-              onClick={() => handleAnswer(preguntaActual.answers[2])}
-              width="100%"
-              disabled={respondido}
-            />
-          </div>
-          <div className="col-6">
-            <Btn
-              text={preguntaActual.answers[3]}
-              type={respondido ? (preguntaActual.answers[3] === preguntaActual.correct ? "success" : "secondary") : "info"}
-              onClick={() => handleAnswer(preguntaActual.answers[3])}
-              width="100%"
-              disabled={respondido}
-            />
-          </div>
-        </div>
-      </div>
+        <StatsBox
+          preguntaActual={indexPreguntaActual + 1}
+          preguntasTotales={preguntasTotales}
+          tiempoRestante={tiempoRestante}
+          puntos={puntaje}
+        />
 
-      {ultimosPuntos !== null && (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={indexPreguntaActual}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <QuestionBox question={preguntaActual.question} />
+          </motion.div>
+        </AnimatePresence>
+
         <div
-          className="card bg-primary bg-opacity-10 border-primary mb-4 my-5 shadow-sm"
-          style={{ width: '1300px', marginLeft: 'auto', marginRight: 'auto' }}
+          className="mx-auto"
+          style={{ width: '1300px', maxWidth: '90%', background: 'transparent', border: 'none', boxShadow: 'none' }}
         >
-          <div className="card-body p-4">
-            <h4 className="card-title text-center mb-3">
-              Puntos obtenidos: {ultimosPuntos}/{puntosPosibles}
-            </h4>
-            <Btn text="Continuar" type="light" onClick={() => {
-              siguientePregunta()
-              reiniciar(tiempoPorPregunta)
-              iniciar()
-              setRespondido(false)
-            }} width='640px' />
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={indexPreguntaActual}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.1, duration: 0.3 }}
+              className="row g-2"
+            >
+            <div className="row g-2">
+              <div className="col-6">
+                <Btn
+                  text={preguntaActual.answers[0]}
+                  type={respondido ? (preguntaActual.answers[0] === preguntaActual.correct ? "success" : "secondary") : "primary"}
+                  onClick={() => handleAnswer(preguntaActual.answers[0])}
+                  width="100%"
+                  disabled={respondido}
+                />
+              </div>
+              <div className="col-6">
+                <Btn
+                  text={preguntaActual.answers[1]}
+                  type={respondido ? (preguntaActual.answers[1] === preguntaActual.correct ? "success" : "secondary") : "warning"}
+                  onClick={() => handleAnswer(preguntaActual.answers[1])}
+                  width="100%"
+                  disabled={respondido}
+                />
+              </div>
+              <div className="col-6">
+                <Btn
+                  text={preguntaActual.answers[2]}
+                  type={respondido ? (preguntaActual.answers[2] === preguntaActual.correct ? "success" : "secondary") : "danger"}
+                  onClick={() => handleAnswer(preguntaActual.answers[2])}
+                  width="100%"
+                  disabled={respondido}
+                />
+              </div>
+              <div className="col-6">
+                <Btn
+                  text={preguntaActual.answers[3]}
+                  type={respondido ? (preguntaActual.answers[3] === preguntaActual.correct ? "success" : "secondary") : "info"}
+                  onClick={() => handleAnswer(preguntaActual.answers[3])}
+                  width="100%"
+                  disabled={respondido}
+                />
+              </div>
+            </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
-      )}
-    </div>
+
+        {ultimosPuntos !== null && (
+          <div
+            className="card bg-primary bg-opacity-10 border-primary mb-4 my-5 shadow-sm"
+            style={{ width: '1300px', marginLeft: 'auto', marginRight: 'auto' }}
+          >
+            <div className="card-body p-4">
+              <h4 className="card-title text-center mb-3">
+                Puntos obtenidos: {ultimosPuntos}/{puntosPosibles}
+              </h4>
+              <Btn text="Continuar" type="light" onClick={() => {
+                siguientePregunta()
+                reiniciar(tiempoPorPregunta)
+                iniciar()
+                setRespondido(false)
+              }} width='640px' />
+            </div>
+          </div>
+        )}
+      </div>
+    </PageTransition>
   )
 }
 
