@@ -1,6 +1,6 @@
 import "bootswatch/dist/vapor/bootstrap.min.css";
 import './fixes.css';
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import { HashRouter, Routes, Route } from "react-router-dom"
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { GameProvider } from "./context/GameContext"
