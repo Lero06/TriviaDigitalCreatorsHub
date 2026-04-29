@@ -1,11 +1,13 @@
 import { useLocation } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
+import { useState } from "react"
+import { PageTransition } from "../components/PageTransition"
 import Btn from "../components/Btn"
 import ResultStats from "../components/ResultStats"
 import Modal from "../components/Modal"
 import Alert from "../components/Alert"
-import { useNavigate } from "react-router-dom"
-import { useAuth } from "../context/AuthContext"
-import { useState } from "react"
+
 
 function Result() {
   const location = useLocation()
@@ -52,11 +54,12 @@ Respuestas correctas: ${respuestasCorrectas}/${preguntasTotales}
   }
 
   return (
-    <div
-      className="container"
-      style={{
-        minHeight: "100vh",
-        display: "flex",
+    <PageTransition>
+      <div
+        className="container"
+        style={{
+          minHeight: "100vh",
+          display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start",
         alignItems: "center",
@@ -111,6 +114,7 @@ Respuestas correctas: ${respuestasCorrectas}/${preguntasTotales}
         }))}
       />
     </div>
+    </PageTransition>
   )
 }
 
