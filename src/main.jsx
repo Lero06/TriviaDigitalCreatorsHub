@@ -1,6 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
 import './fixes.css';
+import './animations.css';
 import App from "./App"
 import { GameProvider } from "./context/GameContext"
 
