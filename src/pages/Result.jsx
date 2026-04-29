@@ -7,11 +7,11 @@ import { useState } from "react"
 import Alert from "../components/Alert"
 
 function Result() {
-    const location = useLocation()
-    const navigate = useNavigate()
-    const [showModal, setShowModal] = useState(false)
-    const { isAuthenticated, user } = useAuth()
-    const { puntaje, respuestasCorrectas, preguntasTotales, dificultad, categoria } = location.state
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [showModal, setShowModal] = useState(false)
+  const { isAuthenticated, user } = useAuth()
+  const { puntaje, respuestasCorrectas, preguntasTotales, dificultad, categoria } = location.state
 
   const textoPorCompartir = `Trivia Game
 Puntos: ${puntaje}
@@ -21,95 +21,90 @@ Respuestas correctas: ${respuestasCorrectas}/${preguntasTotales}
 ¡Jugá vos también!`
 
   const encodedText = encodeURIComponent(textoPorCompartir)
-
   const platformas = [
-    {
-      name: "Twitter / X",
-      color: "dark",
-      url: `https://twitter.com/intent/tweet?text=${encodedText}`
-    },
-    {
-      name: "Facebook",
-      color: "info",
-      url: `https://www.facebook.com/sharer/sharer.php?quote=${encodedText}`
-    },
-    {
-      name: "WhatsApp",
-      color: "success",
-      url: `https://wa.me/?text=${encodedText}`
-    },
+    { name: "Twitter / X", color: "dark", url: `https://twitter.com/intent/tweet?text=${encodedText}` },
+    { name: "Facebook", color: "info", url: `https://www.facebook.com/sharer/sharer.php?quote=${encodedText}` },
+    { name: "WhatsApp", color: "success", url: `https://wa.me/?text=${encodedText}` },
   ]
 
   function handleShare(url) {
     window.open(url, "_blank")
   }
 
-   const handleAuth = () => {
-        if (!isAuthenticated) {
-            alert("Debes iniciar sesión para compartir");
-            navigate("/login");
-            return;
-        }
-        setShowModal(true);
-    };
+  const handleAuth = () => {
+    if (!isAuthenticated) {
+      alert("Debes iniciar sesión para compartir")
+      navigate("/login")
+      return
+    }
+    setShowModal(true)
+  }
 
-    return (
-      <div className="container mt-5">
-        <h1 className="text-center mb-4">Resultados</h1>
+  return (
+    <div
+      className="container"
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        paddingTop: "150px",
+      }}
+    >
+      <h1 className="text-center mb-4">Resultados</h1>
 
-         {isAuthenticated && (
-               <Alert
-               type="info"
-               message={`Logueado como: ${user.name}`}
-               width={400}
-               />
-            )}
-            
-        <ResultStats
-          puntaje={puntaje}
-          respuestasCorrectas={respuestasCorrectas}
-          preguntasTotales={preguntasTotales}
-          dificultad={dificultad}
-          categoria={categoria}
+      {isAuthenticated && (
+        <Alert
+          type="info"
+          message={`Logueado como: ${user.name}`}
+          width={400}
         />
+      )}
 
-        <div className="d-grid gap-2">
-          <Btn text="Jugar Otra Vez" to="/" type="primary" />
-          <Btn text="Compartir Resultado" onClick={handleAuth} type="success" />
-        </div>
+      <ResultStats
+        puntaje={puntaje}
+        respuestasCorrectas={respuestasCorrectas}
+        preguntasTotales={preguntasTotales}
+        dificultad={dificultad}
+        categoria={categoria}
+      />
 
-        <div
-          className={`modal fade ${showModal ? "show d-block" : ""}`}
-          style={{ backgroundColor: showModal ? "rgba(0,0,0,0.5)" : "" }}
-        >
-          <div className="modal-dialog modal-dialog-centered" style={{width: 400}}>
-            <div className="modal-content">
+      <div className="d-grid gap-2" style={{ width: "400px", maxWidth: "90%" }}>
+        <Btn text="Jugar Otra Vez" to="/" type="primary" />
+        <Btn text="Compartir Resultado" onClick={handleAuth} type="success" />
+      </div>
 
-              <div className="modal-header">
-                <h5 className="modal-title">🔗 Compartir en</h5>
+      <div
+        className={`modal fade ${showModal ? "show d-block" : ""}`}
+        style={{ backgroundColor: showModal ? "rgba(0,0,0,0.5)" : "" }}
+      >
+        <div className="modal-dialog modal-dialog-centered" style={{ width: 400 }}>
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Compartir en</h5>
+              <button
+                type="button"
+                className="btn-close"
+                onClick={() => setShowModal(false)}
+              />
+            </div>
+            <div className="modal-body d-grid gap-2">
+              {platformas.map(platform => (
                 <button
-                  type="button"
-                  className="btn-close"
-                  onClick={() => setShowModal(false)}
-                />
-              </div>
-
-              <div className="modal-body d-grid gap-2">
-                {platformas.map(platform => (
-                  <button
-                    key={platform.name}
-                    className={`btn btn-${platform.color}`}
-                    onClick={() => handleShare(platform.url)}
-                  >
-                    {platform.name}
-                  </button>
-                ))}
-              </div>
+                  key={platform.name}
+                  className={`btn btn-${platform.color}`}
+                  onClick={() => handleShare(platform.url)}
+                >
+                  {platform.name}
+                </button>
+              ))}
             </div>
           </div>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
+}
 
-  export default Result
+export default Result
