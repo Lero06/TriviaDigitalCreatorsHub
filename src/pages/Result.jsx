@@ -1,15 +1,19 @@
 import { useLocation } from "react-router-dom"
-import Btn from "../components/Btn"
-import ResultStats from "../components/ResultStats"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 import { useState } from "react"
+import { PageTransition } from "../components/PageTransition"
+import Btn from "../components/Btn"
+import ResultStats from "../components/ResultStats"
+import Modal from "../components/Modal"
 import Alert from "../components/Alert"
+
 
 function Result() {
   const location = useLocation()
   const navigate = useNavigate()
   const [showModal, setShowModal] = useState(false)
+  const [showGoogleConfirm, setShowGoogleConfirm] = useState(false)
   const { isAuthenticated, user } = useAuth()
   const { puntaje, respuestasCorrectas, preguntasTotales, dificultad, categoria } = location.state
 
@@ -33,19 +37,29 @@ Respuestas correctas: ${respuestasCorrectas}/${preguntasTotales}
 
   const handleAuth = () => {
     if (!isAuthenticated) {
-      alert("Debes iniciar sesión para compartir")
-      navigate("/login")
+      setShowGoogleConfirm(true)
       return
     }
     setShowModal(true)
   }
 
+  const handleGoogleConfirm = () => {
+    setShowGoogleConfirm(false)
+    navigate("/login")
+  }
+
+  const handleGoogleCancel = () => {
+    setShowGoogleConfirm(false)
+    setShowModal(true)
+  }
+
   return (
-    <div
-      className="container"
-      style={{
-        minHeight: "100vh",
-        display: "flex",
+    <PageTransition>
+      <div
+        className="container"
+        style={{
+          minHeight: "100vh",
+          display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start",
         alignItems: "center",
@@ -75,35 +89,32 @@ Respuestas correctas: ${respuestasCorrectas}/${preguntasTotales}
         <Btn text="Compartir Resultado" onClick={handleAuth} type="success" />
       </div>
 
-      <div
-        className={`modal fade ${showModal ? "show d-block" : ""}`}
-        style={{ backgroundColor: showModal ? "rgba(0,0,0,0.5)" : "" }}
-      >
-        <div className="modal-dialog modal-dialog-centered" style={{ width: 400 }}>
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Compartir en</h5>
-              <button
-                type="button"
-                className="btn-close"
-                onClick={() => setShowModal(false)}
-              />
-            </div>
-            <div className="modal-body d-grid gap-2">
-              {platformas.map(platform => (
-                <button
-                  key={platform.name}
-                  className={`btn btn-${platform.color}`}
-                  onClick={() => handleShare(platform.url)}
-                >
-                  {platform.name}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+      <Modal
+        isOpen={showGoogleConfirm}
+        title="¿Iniciar sesión con Google?"
+        onClose={() => setShowGoogleConfirm(false)}
+        buttonsLayout="row"
+        buttons={[
+          { text: "Si", onClick: handleGoogleConfirm, type: "success", size: "", width: "120px" },
+          { text: "No", onClick: handleGoogleCancel, type: "danger", size: "", width: "120px" }
+        ]}
+      />
+
+      <Modal
+        isOpen={showModal}
+        title="Compartir en"
+        onClose={() => setShowModal(false)}
+        buttonsLayout="grid"
+        buttons={platformas.map(platform => ({
+          text: platform.name,
+          onClick: () => handleShare(platform.url),
+          type: platform.color,
+          size: "",
+          width: "377px"
+        }))}
+      />
     </div>
+    </PageTransition>
   )
 }
 

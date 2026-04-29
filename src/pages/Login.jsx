@@ -2,6 +2,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { PageTransition } from "../components/PageTransition";
 import Btn from "../components/Btn"
 
 function Login() {
@@ -19,11 +20,12 @@ function Login() {
   };
 
   return (
-    <div
-      className="container"
-      style={{
-        minHeight: "100vh",
-        display: "flex",
+    <PageTransition>
+      <div
+        className="container"
+        style={{
+          minHeight: "100vh",
+          display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start",
         alignItems: "center",
@@ -48,6 +50,7 @@ function Login() {
       </div>
       <Btn text="Volver Atrás" onClick={() => navigate(-1)} type="secondary" style={{ width: "300px", maxWidth: "100%" }} />
     </div>
+    </PageTransition>
   );
 }
 

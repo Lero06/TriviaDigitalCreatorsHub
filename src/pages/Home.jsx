@@ -1,5 +1,6 @@
 import { useGame } from "../context/GameContext"
 import { useNavigate } from "react-router-dom"
+import { PageTransition } from "../components/PageTransition"
 import Btn from "../components/Btn"
 import SelectInput from "../components/SelectInput"
 
@@ -17,6 +18,7 @@ function Home() {
   }
 
   return (
+    <PageTransition>
       <div
         className="container"
         style={{
@@ -36,7 +38,7 @@ function Home() {
         onChange={(e) => setCategoria(e.target.value)}
         options={[
           { value: "anime", name: "Anime" },
-          { value: "games", name: "Videojuego" },
+          { value: "games", name: "Videojuegos" },
           { value: "films", name: "Peliculas" },
           { value: "computers", name: "ITI" }
         ]}
@@ -58,6 +60,7 @@ function Home() {
         disabled={loading}
       />
     </div>
+    </PageTransition>
   )
 }
 
