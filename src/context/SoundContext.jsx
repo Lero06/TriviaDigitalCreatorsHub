@@ -4,7 +4,7 @@ import useSound from "use-sound"
 const SoundContext = createContext()
 
 export function SoundProvider({ children }) {
-  const [volume, setVolume] = useState(0.3)
+  const [volume, setVolume] = useState(0.2)
 
   const [playMenu, { stop: stopMenu }] = useSound('sounds/Menu.mp3', { loop: true, volume })
   const [playDurante, { stop: stopDurante }] = useSound('sounds/DurantePregunta.mp3', { loop: true, volume })
