@@ -8,8 +8,8 @@ export function SoundProvider({ children }) {
 
   const [playMenu, { stop: stopMenu }] = useSound('sounds/Menu.mp3', { loop: true, volume })
   const [playDurante, { stop: stopDurante }] = useSound('sounds/DurantePregunta.mp3', { loop: true, volume })
-  const [playSeleccionar] = useSound('sounds/SeleccionarPregunta.mp3', { volume })
-  const [playAcabar] = useSound('sounds/AcabarJuego.mp3', { volume })
+  const [playSeleccionar, { stop: stopSeleccionar}] = useSound('sounds/SeleccionarPregunta.mp3', { volume })
+  const [playAcabar, {stop: stopAcabar}] = useSound('sounds/AcabarJuego.mp3', { volume })
 
   function iniciarMenu() {
     stopDurante()
@@ -18,6 +18,7 @@ export function SoundProvider({ children }) {
 
   function iniciarDurante() {
     stopMenu()
+    stopSeleccionar()
     playDurante()
   }
 
@@ -29,12 +30,14 @@ export function SoundProvider({ children }) {
   function iniciarAcabar() {
     stopMenu()
     stopDurante()
+    stopSeleccionar()
     playAcabar()
   }
 
   function detenerTodo() {
     stopMenu()
     stopDurante()
+    stopAcabar()
   }
 
   return (
