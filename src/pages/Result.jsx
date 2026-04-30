@@ -1,11 +1,15 @@
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
+import { useState } from "react"
+import { useEffect } from "react"
+import { useSound2 } from "../context/SoundContext"
 import Btn from "../components/Btn"
 import ResultStats from "../components/ResultStats"
-import { useState } from "react"
 
 function Result() {
   const location = useLocation()
   const [showModal, setShowModal] = useState(false)
+  const navigate = useNavigate()
+  const { iniciarAcabar, detenerTodo } = useSound2()
   const { puntaje, respuestasCorrectas, preguntasTotales, dificultad, categoria } = location.state
 
   const textoPorCompartir = `Cuestionados!
@@ -36,6 +40,8 @@ https://questiona2.vercel.app/?_vercel_share=FSHXM1tEP1iFa4yOadiCxoJwUqOyONnR`
     },
   ]
 
+  useEffect(() => { iniciarAcabar() }, [])
+
   function handleShare(url) {
     window.open(url, "_blank")
   }
@@ -52,7 +58,17 @@ https://questiona2.vercel.app/?_vercel_share=FSHXM1tEP1iFa4yOadiCxoJwUqOyONnR`
       />
 
       <div className="d-grid gap-2">
-        <Btn text="Jugar Otra Vez" to="/" type="primary" />
+        <button
+          type="button"
+          className="btn btn-primary btn-lg d-block mx-auto"
+          onClick={() => {
+            detenerTodo()
+            navigate("/")
+          }}
+          style={{ width: 400 }}
+        >
+          Jugar Otra Vez
+        </button>
 
         <button
           type="button"

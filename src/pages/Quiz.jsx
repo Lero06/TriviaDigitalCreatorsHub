@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useGame } from "../context/GameContext"
 import { motion, AnimatePresence } from "framer-motion"
 import { PageTransition } from "../components/PageTransition"
+import { useSound2 } from "../context/SoundContext"
 import useGameLogic from "../hooks/useGameLogic"
 import useTimer from "../hooks/useTimer"
 import Btn from "../components/Btn"
@@ -13,6 +14,7 @@ function Quiz() {
   const navigate = useNavigate()
   const [respondido, setRespondido] = useState(false)
   const [respuestaSeleccionada, setRespuestaSeleccionada] = useState(null)
+  const { iniciarDurante, seleccionarRespuesta, iniciarAcabar, detenerTodo } = useSound2()
   const { dificultad, categoria, questions, loading, error } = useGame()
   const {
     preguntaActual,
@@ -39,6 +41,8 @@ function Quiz() {
     if (questions.length > 0) iniciar()
   }, [questions])
 
+  useEffect(() => { iniciarDurante() }, [])
+
   useEffect(() => {
     if (!loading && questions.length === 0 && !error) navigate("/")
   }, [loading, questions])
@@ -60,6 +64,8 @@ function Quiz() {
           categoria,
         }
       })
+      detenerTodo()
+      iniciarAcabar()
     }
   }, [isJuegoAcabado])
 
@@ -69,6 +75,7 @@ function Quiz() {
     setRespuestaSeleccionada(answer)
     parar()
     responderPregunta(preguntaActual.correct === answer, tiempoRestante)
+    seleccionarRespuesta()
   }
 
   if (error) {
@@ -139,44 +146,44 @@ function Quiz() {
               transition={{ delay: 0.1, duration: 0.3 }}
               className="row g-2"
             >
-            <div className="row g-2">
-              <div className="col-6">
-                <Btn
-                  text={preguntaActual.answers[0]}
-                  type={respondido ? (preguntaActual.answers[0] === preguntaActual.correct ? "success" : "secondary") : "primary"}
-                  onClick={() => handleAnswer(preguntaActual.answers[0])}
-                  width="100%"
-                  disabled={respondido}
-                />
+              <div className="row g-2">
+                <div className="col-6">
+                  <Btn
+                    text={preguntaActual.answers[0]}
+                    type={respondido ? (preguntaActual.answers[0] === preguntaActual.correct ? "success" : "secondary") : "primary"}
+                    onClick={() => handleAnswer(preguntaActual.answers[0])}
+                    width="100%"
+                    disabled={respondido}
+                  />
+                </div>
+                <div className="col-6">
+                  <Btn
+                    text={preguntaActual.answers[1]}
+                    type={respondido ? (preguntaActual.answers[1] === preguntaActual.correct ? "success" : "secondary") : "warning"}
+                    onClick={() => handleAnswer(preguntaActual.answers[1])}
+                    width="100%"
+                    disabled={respondido}
+                  />
+                </div>
+                <div className="col-6">
+                  <Btn
+                    text={preguntaActual.answers[2]}
+                    type={respondido ? (preguntaActual.answers[2] === preguntaActual.correct ? "success" : "secondary") : "danger"}
+                    onClick={() => handleAnswer(preguntaActual.answers[2])}
+                    width="100%"
+                    disabled={respondido}
+                  />
+                </div>
+                <div className="col-6">
+                  <Btn
+                    text={preguntaActual.answers[3]}
+                    type={respondido ? (preguntaActual.answers[3] === preguntaActual.correct ? "success" : "secondary") : "info"}
+                    onClick={() => handleAnswer(preguntaActual.answers[3])}
+                    width="100%"
+                    disabled={respondido}
+                  />
+                </div>
               </div>
-              <div className="col-6">
-                <Btn
-                  text={preguntaActual.answers[1]}
-                  type={respondido ? (preguntaActual.answers[1] === preguntaActual.correct ? "success" : "secondary") : "warning"}
-                  onClick={() => handleAnswer(preguntaActual.answers[1])}
-                  width="100%"
-                  disabled={respondido}
-                />
-              </div>
-              <div className="col-6">
-                <Btn
-                  text={preguntaActual.answers[2]}
-                  type={respondido ? (preguntaActual.answers[2] === preguntaActual.correct ? "success" : "secondary") : "danger"}
-                  onClick={() => handleAnswer(preguntaActual.answers[2])}
-                  width="100%"
-                  disabled={respondido}
-                />
-              </div>
-              <div className="col-6">
-                <Btn
-                  text={preguntaActual.answers[3]}
-                  type={respondido ? (preguntaActual.answers[3] === preguntaActual.correct ? "success" : "secondary") : "info"}
-                  onClick={() => handleAnswer(preguntaActual.answers[3])}
-                  width="100%"
-                  disabled={respondido}
-                />
-              </div>
-            </div>
             </motion.div>
           </AnimatePresence>
         </div>
@@ -194,6 +201,8 @@ function Quiz() {
                 siguientePregunta()
                 reiniciar(tiempoPorPregunta)
                 iniciar()
+                iniciarDurante()
+                
                 setRespondido(false)
               }} width='640px' />
             </div>

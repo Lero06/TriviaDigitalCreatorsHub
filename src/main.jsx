@@ -4,11 +4,14 @@ import './fixes.css';
 import './animations.css';
 import App from "./App"
 import { GameProvider } from "./context/GameContext"
+import { SoundProvider } from "./context/SoundContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <GameProvider>
-      <App />
-    </GameProvider>
+    <SoundProvider>
+      <GameProvider>
+        <App />
+      </GameProvider>
+    </SoundProvider>
   </React.StrictMode>
 )
