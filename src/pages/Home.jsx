@@ -30,7 +30,7 @@ function Home() {
           paddingTop: "200px",
         }}
       >
-      <h1 className="text-center text-warning">Digital Quiz Hub</h1>
+      <h1 className="text-center text-warning">Cuestionados!</h1>
 
       <SelectInput
         label="Categoría"
