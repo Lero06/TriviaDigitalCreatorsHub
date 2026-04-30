@@ -45,9 +45,7 @@ function Quiz() {
 
   useEffect(() => {
     if (isTerminado) {
-      siguientePregunta()
-      reiniciar(tiempoPorPregunta)
-      iniciar()
+      handleAnswer()
     }
   }, [isTerminado])
 
