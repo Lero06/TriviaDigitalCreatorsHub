@@ -1,81 +1,54 @@
-import { useLocation } from "react-router-dom"
-import { useNavigate } from "react-router-dom"
-import { useAuth } from "../context/AuthContext"
+import { useLocation, useNavigate } from "react-router-dom"
 import { useState } from "react"
-import { PageTransition } from "../components/PageTransition"
+import { useEffect } from "react"
+import { useSound2 } from "../context/SoundContext"
 import Btn from "../components/Btn"
 import ResultStats from "../components/ResultStats"
-import Modal from "../components/Modal"
-import Alert from "../components/Alert"
-
 
 function Result() {
   const location = useLocation()
-  const navigate = useNavigate()
   const [showModal, setShowModal] = useState(false)
-  const [showGoogleConfirm, setShowGoogleConfirm] = useState(false)
-  const { isAuthenticated, user } = useAuth()
+  const navigate = useNavigate()
+  const { iniciarAcabar, detenerTodo } = useSound2()
   const { puntaje, respuestasCorrectas, preguntasTotales, dificultad, categoria } = location.state
 
-  const textoPorCompartir = `Trivia Game
+  const textoPorCompartir = `Cuestionados!
 Puntos: ${puntaje}
 Dificultad: ${dificultad}
 Categoria: ${categoria}
 Respuestas correctas: ${respuestasCorrectas}/${preguntasTotales}
-¡Jugá vos también!`
+¡Jugá Cuestionados vos también!
+https://questiona2.vercel.app/?_vercel_share=FSHXM1tEP1iFa4yOadiCxoJwUqOyONnR`
 
   const encodedText = encodeURIComponent(textoPorCompartir)
+
   const platformas = [
-    { name: "Twitter / X", color: "dark", url: `https://twitter.com/intent/tweet?text=${encodedText}` },
-    { name: "Facebook", color: "info", url: `https://www.facebook.com/sharer/sharer.php?quote=${encodedText}` },
-    { name: "WhatsApp", color: "success", url: `https://wa.me/?text=${encodedText}` },
+    {
+      name: "Twitter / X",
+      color: "dark",
+      url: `https://twitter.com/intent/tweet?text=${encodedText}`
+    },
+    {
+      name: "Facebook",
+      color: "info",
+      url: `https://www.facebook.com/sharer/sharer.php?quote=${encodedText}`
+    },
+    {
+      name: "WhatsApp",
+      color: "success",
+      url: `https://wa.me/?text=${encodedText}`
+    },
   ]
+
+  useEffect(() => { iniciarAcabar() }, [])
 
   function handleShare(url) {
     window.open(url, "_blank")
   }
 
-  const handleAuth = () => {
-    if (!isAuthenticated) {
-      setShowGoogleConfirm(true)
-      return
-    }
-    setShowModal(true)
-  }
-
-  const handleGoogleConfirm = () => {
-    setShowGoogleConfirm(false)
-    navigate("/login")
-  }
-
-  const handleGoogleCancel = () => {
-    setShowGoogleConfirm(false)
-    setShowModal(true)
-  }
-
   return (
-    <PageTransition>
-      <div
-        className="container"
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        paddingTop: "150px",
-      }}
-    >
+    <div className="container mt-5">
       <h1 className="text-center mb-4">Resultados</h1>
-
-      {isAuthenticated && (
-        <Alert
-          type="info"
-          message={`Logueado como: ${user.name}`}
-          width={400}
-        />
-      )}
-
       <ResultStats
         puntaje={puntaje}
         respuestasCorrectas={respuestasCorrectas}
@@ -84,37 +57,60 @@ Respuestas correctas: ${respuestasCorrectas}/${preguntasTotales}
         categoria={categoria}
       />
 
-      <div className="d-grid gap-2" style={{ width: "400px", maxWidth: "90%" }}>
-        <Btn text="Jugar Otra Vez" to="/" type="primary" />
-        <Btn text="Compartir Resultado" onClick={handleAuth} type="success" />
+      <div className="d-grid gap-2">
+        <button
+          type="button"
+          className="btn btn-primary btn-lg d-block mx-auto"
+          onClick={() => {
+            detenerTodo()
+            navigate("/")
+          }}
+          style={{ width: 400 }}
+        >
+          Jugar Otra Vez
+        </button>
+
+        <button
+          type="button"
+          className="btn btn-success btn-lg d-block mx-auto"
+          onClick={() => setShowModal(true)}
+          style={{ width: 400 }}
+        >
+          Compartir Resultado
+        </button>
       </div>
 
-      <Modal
-        isOpen={showGoogleConfirm}
-        title="¿Iniciar sesión con Google?"
-        onClose={() => setShowGoogleConfirm(false)}
-        buttonsLayout="row"
-        buttons={[
-          { text: "Si", onClick: handleGoogleConfirm, type: "success", size: "", width: "120px" },
-          { text: "No", onClick: handleGoogleCancel, type: "danger", size: "", width: "120px" }
-        ]}
-      />
+      <div
+        className={`modal fade ${showModal ? "show d-block" : ""}`}
+        style={{ backgroundColor: showModal ? "rgba(0,0,0,0.5)" : "" }}
+      >
+        <div className="modal-dialog modal-dialog-centered" style={{ width: 400 }}>
+          <div className="modal-content">
 
-      <Modal
-        isOpen={showModal}
-        title="Compartir en"
-        onClose={() => setShowModal(false)}
-        buttonsLayout="grid"
-        buttons={platformas.map(platform => ({
-          text: platform.name,
-          onClick: () => handleShare(platform.url),
-          type: platform.color,
-          size: "",
-          width: "377px"
-        }))}
-      />
+            <div className="modal-header">
+              <h5 className="modal-title">🔗 Compartir en</h5>
+              <button
+                type="button"
+                className="btn-close"
+                onClick={() => setShowModal(false)}
+              />
+            </div>
+
+            <div className="modal-body d-grid gap-2">
+              {platformas.map(platform => (
+                <button
+                  key={platform.name}
+                  className={`btn btn-${platform.color}`}
+                  onClick={() => handleShare(platform.url)}
+                >
+                  {platform.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    </PageTransition>
   )
 }
 
